@@ -1,0 +1,1 @@
+//puts together all features onto the extracted page and returns it 
