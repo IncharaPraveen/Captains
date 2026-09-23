@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Captains reading view</title>
+    <link rel="stylesheet" href="../fonts.css" />
+    <link rel="stylesheet" href="reader.css" />
+  </head>
+  <body>
+    <header>
+      <p class="product-name">Captains reading view</p>
+      <h1 id="title">Preparing page…</h1>
+      <div class="reader-actions">
+        <a id="source-link" target="_blank" rel="noopener noreferrer" hidden>
+          View original page
+        </a>
+        <label class="reader-toggle">
+          <span class="reader-toggle-copy">
+            <span>OpenDyslexic</span>
+            <small id="reader-font-status" aria-live="polite">
+              Standard font active
+            </small>
+          </span>
+          <input
+            id="reader-open-dyslexic"
+            type="checkbox"
+            role="switch"
+            aria-label="Use OpenDyslexic on all websites"
+          />
+        </label>
+      </div>
+    </header>
+    <main id="reader-content" aria-live="polite"></main>
+    <p id="reader-error" role="alert" hidden></p>
+    <script src="reader.js"></script>
+  </body>
+</html>

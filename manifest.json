@@ -2,22 +2,33 @@
   "manifest_version": 3,
   "name": "Captains",
   "version": "0.1.0",
-  "description": "A cross-browser extension starter for Chrome and Safari.",
-  "permissions": ["storage"],
+  "description": "Accessible reading tools for the web.",
+  "permissions": ["storage", "activeTab"],
   "action": {
     "default_title": "Captains",
-    "default_popup": "popup/popup.html"
+    "default_popup": "src/popup/popup.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content/content.js"],
-      "css": ["content/content.css"],
+      "js": [
+        "src/features/extract.js",
+        "src/features/open-dyslexic.js",
+        "src/features/text-to-speech.js",
+        "src/content.js"
+      ],
+      "css": ["src/content-fonts.css", "src/content.css"],
       "run_at": "document_idle"
     }
   ],
-  "options_page": "options/options.html"
+  "options_page": "src/options/options.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/fonts/*.woff2"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

@@ -1,0 +1,276 @@
+:root {
+  --captains-reader-font: Arial, Verdana, Tahoma, sans-serif;
+  color-scheme: light;
+  background: #f7f4ed;
+  color: #17212b;
+  font-family: var(--captains-reader-font);
+  font-size: 18px;
+  font-stretch: normal;
+  line-height: 1.65;
+}
+
+html.captains-reader-open-dyslexic {
+  --captains-reader-font: "Captains OpenDyslexic", sans-serif;
+}
+
+html.captains-reader-open-dyslexic body,
+html.captains-reader-open-dyslexic header,
+html.captains-reader-open-dyslexic header *,
+html.captains-reader-open-dyslexic main,
+html.captains-reader-open-dyslexic main * {
+  font-family: "Captains OpenDyslexic", sans-serif !important;
+}
+
+body {
+  background: #f7f4ed;
+  color: #17212b;
+  font-family: var(--captains-reader-font);
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+header,
+main,
+#reader-error {
+  box-sizing: border-box;
+  margin-inline: auto;
+  max-width: 68ch;
+  padding-inline: 24px;
+  width: 100%;
+}
+
+header {
+  border-bottom: 1px solid #68737d;
+  padding-block: 40px 24px;
+  text-align: left;
+}
+
+main {
+  column-count: 1;
+  column-width: auto;
+  letter-spacing: 0.02em;
+  padding-block: 32px 64px;
+  text-align: left;
+  word-spacing: 0.08em;
+}
+
+main *,
+main *::before,
+main *::after {
+  animation: none !important;
+  column-count: 1 !important;
+  column-width: auto !important;
+  scroll-behavior: auto !important;
+  text-align: left !important;
+  text-shadow: none !important;
+  text-transform: none !important;
+  transition: none !important;
+}
+
+.product-name {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: #4b5563;
+}
+
+.reader-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.reader-toggle {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 16px;
+  gap: 10px;
+}
+
+.reader-toggle-copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-toggle-copy small {
+  color: #4b5563;
+  font-size: 12px;
+}
+
+.reader-toggle input {
+  appearance: none;
+  background: #68737d;
+  border: 1px solid #17212b;
+  border-radius: 999px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  height: 26px;
+  margin: 0;
+  padding: 2px;
+  width: 48px;
+}
+
+.reader-toggle input::before {
+  background: #f7f4ed;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  height: 20px;
+  transition: transform 150ms ease;
+  width: 20px;
+}
+
+.reader-toggle input:checked {
+  background: #005a91;
+}
+
+.reader-toggle input:checked::before {
+  transform: translateX(20px);
+}
+
+.reader-toggle input:focus-visible {
+  outline: 3px solid #005a91;
+  outline-offset: 3px;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  margin: 0 0 8px;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.35;
+  margin-block: 2em 0.7em;
+}
+
+p,
+li,
+blockquote {
+  font-size: max(1rem, 18px);
+}
+
+p {
+  margin-block: 0 1.25em;
+}
+
+li + li {
+  margin-top: 0.65em;
+}
+
+ul,
+ol {
+  margin-block: 0 1.5em;
+  padding-inline-start: 1.6em;
+}
+
+section + section {
+  margin-top: 2em;
+}
+
+a {
+  color: #005a91;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+a:focus-visible {
+  outline: 3px solid #005a91;
+  outline-offset: 3px;
+}
+
+main em,
+main i {
+  font-style: normal;
+}
+
+main u {
+  text-decoration: none;
+}
+
+main strong,
+main b {
+  font-weight: 700;
+}
+
+img {
+  display: block;
+  height: auto;
+  margin-block: 1.5em;
+  max-width: 100%;
+}
+
+pre,
+table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+blockquote {
+  border-inline-start: 4px solid #68737d;
+  margin-inline: 0;
+  padding-inline-start: 1.25em;
+}
+
+code,
+pre {
+  background: #e9e4d9;
+  color: #17212b;
+}
+
+code {
+  padding: 0.08em 0.2em;
+}
+
+pre {
+  padding: 1em;
+  white-space: pre-wrap;
+}
+
+table {
+  border-collapse: collapse;
+  display: block;
+  margin-block: 1.5em;
+}
+
+th,
+td {
+  border-bottom: 1px solid #68737d;
+  padding: 0.65em;
+  vertical-align: top;
+}
+
+th {
+  font-weight: 700;
+}
+
+::selection {
+  background: #b9dcf2;
+  color: #17212b;
+}
+
+@media (max-width: 600px) {
+  :root {
+    font-size: 18px;
+  }
+
+  header,
+  main,
+  #reader-error {
+    padding-inline: 18px;
+  }
+
+  .reader-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,5 @@
+html.captains-open-dyslexic,
+html.captains-open-dyslexic body,
+html.captains-open-dyslexic body * {
+  font-family: "Captains OpenDyslexic", sans-serif !important;
+}
