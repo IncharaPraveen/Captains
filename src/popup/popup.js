@@ -1,5 +1,6 @@
 const extensionApi = globalThis.browser ?? globalThis.chrome;
 const openDyslexicInput = document.querySelector("#open-dyslexic");
+const layoutInput = document.querySelector("#layout");
 const openReaderButton = document.querySelector("#open-reader");
 const startReadingButton = document.querySelector("#start-reading");
 const stopReadingButton = document.querySelector("#stop-reading");
@@ -29,9 +30,10 @@ async function sendToActivePage(type) {
 }
 
 extensionApi.storage.local.get(
-  { openDyslexic: false },
-  ({ openDyslexic }) => {
+  { openDyslexic: false, layout: false },
+  ({ openDyslexic, layout }) => {
     openDyslexicInput.checked = openDyslexic;
+    layoutInput.checked = layout;
   },
 );
 
@@ -39,6 +41,13 @@ openDyslexicInput.addEventListener("change", () => {
   extensionApi.storage.local.set(
     { openDyslexic: openDyslexicInput.checked },
     () => setStatus("Font preference saved for all websites."),
+  );
+});
+
+layoutInput.addEventListener("change", () => {
+  extensionApi.storage.local.set(
+    { layout: layoutInput.checked },
+    () => setStatus("Readable layout preference saved."),
   );
 });
 

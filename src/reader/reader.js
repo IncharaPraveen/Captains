@@ -7,6 +7,26 @@ const openDyslexicInput = document.querySelector("#reader-open-dyslexic");
 const fontStatus = document.querySelector("#reader-font-status");
 let openDyslexicFontsPromise;
 let fontApplicationVersion = 0;
+let originalReaderHtml;
+let readerLayoutEnabled = false;
+
+function setReaderLayout(enabled) {
+  if (enabled === readerLayoutEnabled) return;
+
+  if (enabled) {
+    originalReaderHtml = readerContent.innerHTML;
+    globalThis.Captains.features.layout.apply(readerContent);
+    readerLayoutEnabled = true;
+    return;
+  }
+
+  if (originalReaderHtml !== undefined) {
+    readerContent.innerHTML = originalReaderHtml;
+  }
+
+  originalReaderHtml = undefined;
+  readerLayoutEnabled = false;
+}
 
 function loadOpenDyslexicFonts() {
   if (!openDyslexicFontsPromise) {
@@ -111,7 +131,25 @@ async function loadReaderDocument() {
   }
 
   readerContent.innerHTML = readerDocument.contentHtml;
+  extensionApi.storage.local.get({ layout: false }, ({ layout }) => {
+    document.documentElement.classList.toggle(
+      "captains-readable-layout",
+      Boolean(layout),
+    );
+    setReaderLayout(Boolean(layout));
+  });
 }
+
+extensionApi.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName !== "local" || !changes.layout) return;
+
+  const enabled = Boolean(changes.layout.newValue);
+  document.documentElement.classList.toggle(
+    "captains-readable-layout",
+    enabled,
+  );
+  setReaderLayout(enabled);
+});
 
 extensionApi.storage.local.get(
   { openDyslexic: false },

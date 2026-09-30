@@ -3,15 +3,19 @@ const extensionApi = globalThis.browser ?? globalThis.chrome;
 const features = globalThis.Captains.features;
 
 extensionApi.storage.local.get(
-  { openDyslexic: false },
-  ({ openDyslexic }) => {
+  { openDyslexic: false, layout: false },
+  ({ openDyslexic, layout }) => {
     features.openDyslexic.setEnabled(openDyslexic);
+    features.layout.setEnabled(layout);
   },
 );
 
 extensionApi.storage.onChanged.addListener((changes, areaName) => {
   if (areaName === "local" && changes.openDyslexic) {
     features.openDyslexic.setEnabled(changes.openDyslexic.newValue);
+  }
+  if (areaName === "local" && changes.layout) {
+    features.layout.setEnabled(changes.layout.newValue);
   }
 });
 

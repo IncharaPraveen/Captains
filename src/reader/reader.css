@@ -47,17 +47,16 @@ header {
 }
 
 main {
-  column-count: 1;
-  column-width: auto;
   letter-spacing: 0.02em;
   padding-block: 32px 64px;
   text-align: left;
   word-spacing: 0.08em;
 }
 
-main *,
-main *::before,
-main *::after {
+.captains-readable-layout main,
+.captains-readable-layout main *,
+.captains-readable-layout main *::before,
+.captains-readable-layout main *::after {
   animation: none !important;
   column-count: 1 !important;
   column-width: auto !important;
