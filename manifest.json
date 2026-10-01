@@ -4,7 +4,10 @@
   "version": "0.1.0",
   "description": "Accessible reading tools for the web.",
   "permissions": ["storage", "activeTab"],
-  "host_permissions": ["http://localhost:8787/*"],
+  "host_permissions": [
+    "http://localhost:8787/*",
+    "https://captains-api.onrender.com/*"
+  ],
   "action": {
     "default_title": "Captains",
     "default_popup": "src/popup/popup.html"

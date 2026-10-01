@@ -11,20 +11,23 @@ if (fs.existsSync(".env")) {
 }
 
 const port = Number(process.env.PORT || 8787);
-const model = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
+const model = process.env.GROQ_MODEL || "openai/gpt-oss-20b";
 
 function sendJson(response, status, body) {
   response.writeHead(status, {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   });
   response.end(JSON.stringify(body));
 }
 
 const server = http.createServer(async (request, response) => {
   if (request.method === "OPTIONS") return sendJson(response, 204, {});
+  if (request.method === "GET" && request.url === "/health") {
+    return sendJson(response, 200, { status: "ok" });
+  }
   if (request.method !== "POST" || request.url !== "/api/summarise") {
     return sendJson(response, 404, { error: "Not found" });
   }
@@ -66,4 +69,6 @@ const server = http.createServer(async (request, response) => {
   }
 });
 
-server.listen(port, "0.0.0.0", () => console.log(`Captains summariser listening on http://localhost:${port}`));
+server.listen(port, "0.0.0.0", () => {
+  console.log(`Captains summariser listening on port ${port}`);
+});
