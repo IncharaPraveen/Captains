@@ -1,0 +1,37 @@
+.captains-selection-toolbar {
+  position: absolute;
+  z-index: 2147483647;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  max-width: min(420px, calc(100vw - 16px));
+  padding: 6px;
+  border: 1px solid #b8c4d6;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 5px 18px rgb(0 0 0 / 20%);
+  color: #172033;
+  font: 14px/1.35 system-ui, sans-serif;
+}
+
+.captains-selection-toolbar[hidden] { display: none; }
+.captains-selection-toolbar button {
+  border: 0;
+  border-radius: 5px;
+  padding: 7px 10px;
+  background: #1d4ed8;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.captains-selection-toolbar button:disabled { opacity: .6; cursor: wait; }
+.captains-selection-status { color: #43516a; }
+.captains-summary {
+  flex-basis: 100%;
+  max-height: 180px;
+  overflow: auto;
+  padding: 8px;
+  border-top: 1px solid #d9e0ea;
+  white-space: pre-wrap;
+}

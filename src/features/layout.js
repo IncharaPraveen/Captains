@@ -45,9 +45,37 @@ function splitLongParagraphs(root) {
     const text = paragraph.textContent.trim();
     if (!text) return;
 
-    const sentences = text.match(/[^.!?]+(?:[.!?]+|$)/g)
+    // Protect periods that are not sentence boundaries before splitting.
+    // The markers are restored below, so the paragraph text is unchanged.
+    const protectedPeriods = [];
+    const protectedText = text
+      .replace(
+        /\b(?:e\.g|i\.e|etc|vs|mr|mrs|ms|dr|prof|sr|jr|st)\./gi,
+        (abbreviation) => {
+          const marker = `\uE000${protectedPeriods.length}\uE001`;
+          protectedPeriods.push(abbreviation);
+          return abbreviation.slice(0, -1) + marker;
+        },
+      )
+      .replace(/(?<=\d)\.(?=\d)/g, () => {
+        const marker = `\uE000${protectedPeriods.length}\uE001`;
+        protectedPeriods.push('.');
+        return marker;
+      })
+      .replace(/\b([A-Z])\.(?=\s+[A-Z]\b)/g, (initial) => {
+        const marker = `\uE000${protectedPeriods.length}\uE001`;
+        protectedPeriods.push('.');
+        return initial.slice(0, -1) + marker;
+      });
+
+    const sentences = protectedText.match(/[^.!?]+(?:[.!?]+|$)/g)
       ?.map((sentence) => sentence.trim())
-      .filter(Boolean);
+      .filter(Boolean)
+      .map((sentence) =>
+        sentence.replace(/\uE000(\d+)\uE001/g, (_marker, index) =>
+          protectedPeriods[Number(index)],
+        ),
+      );
 
     if (!sentences || sentences.length <= 2) return;
 

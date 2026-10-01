@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "Accessible reading tools for the web.",
   "permissions": ["storage", "activeTab"],
+  "host_permissions": ["http://localhost:8787/*"],
   "action": {
     "default_title": "Captains",
     "default_popup": "src/popup/popup.html"
@@ -16,12 +17,13 @@
       "matches": ["<all_urls>"],
       "js": [
         "src/features/extract.js",
-        "src/features/layout.js",
         "src/features/open-dyslexic.js",
         "src/features/text-to-speech.js",
+        "src/features/summariser.js",
+        "src/features/selection-toolbar.js",
         "src/content.js"
       ],
-      "css": ["src/content-fonts.css", "src/content.css"],
+      "css": ["src/content-fonts.css", "src/content.css", "src/selection-toolbar.css"],
       "run_at": "document_idle"
     }
   ],

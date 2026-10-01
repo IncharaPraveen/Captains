@@ -15,25 +15,61 @@
         <a id="source-link" target="_blank" rel="noopener noreferrer" hidden>
           View original page
         </a>
-        <label class="reader-toggle">
-          <span class="reader-toggle-copy">
-            <span>OpenDyslexic</span>
-            <small id="reader-font-status" aria-live="polite">
-              Standard font active
-            </small>
-          </span>
-          <input
-            id="reader-open-dyslexic"
-            type="checkbox"
-            role="switch"
-            aria-label="Use OpenDyslexic on all websites"
-          />
-        </label>
+        <div class="reader-toggles">
+          <label class="reader-toggle">
+            <span class="reader-toggle-copy">
+              <span>OpenDyslexic</span>
+              <small id="reader-font-status" aria-live="polite">
+                Standard font active
+              </small>
+            </span>
+            <input
+              id="reader-open-dyslexic"
+              type="checkbox"
+              role="switch"
+              aria-label="Use OpenDyslexic on all websites"
+            />
+          </label>
+          <label class="reader-toggle">
+            <span class="reader-toggle-copy">
+              <span>Readable layout</span>
+              <small id="reader-layout-status" aria-live="polite">
+                Standard layout active
+              </small>
+            </span>
+            <input
+              id="reader-layout"
+              type="checkbox"
+              role="switch"
+              aria-label="Use readable layout"
+            />
+          </label>
+        </div>
       </div>
     </header>
     <main id="reader-content" aria-live="polite"></main>
     <p id="reader-error" role="alert" hidden></p>
+        <div id="selection-actions" class="selection-actions" hidden>
+      <button id="selection-play-reading" type="button">Play</button>
+      <button id="selection-stop-reading" type="button">Stop</button>
+      <input
+        id="selection-speech-progress"
+        type="range"
+        min="0"
+        max="0"
+        value="0"
+        step="1"
+        aria-label="Speech position"
+      />
+      <button id="selection-summarise" type="button">Simplify selection</button>
+    </div>
+    <aside id="summary-panel" class="summary-panel" hidden aria-live="polite">
+      <h2>Simplified English</h2>
+      <p id="summary-status"></p>
+      <p id="summary-text"></p>
+    </aside>
     <script src="../features/layout.js"></script>
+    <script src="../features/summariser.js"></script>
     <script src="reader.js"></script>
   </body>
 </html>
