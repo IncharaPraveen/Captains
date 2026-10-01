@@ -17,6 +17,7 @@
       "matches": ["<all_urls>"],
       "js": [
         "src/features/extract.js",
+        "src/features/layout.js",
         "src/features/open-dyslexic.js",
         "src/features/text-to-speech.js",
         "src/features/summariser.js",

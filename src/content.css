@@ -3,3 +3,45 @@ html.captains-open-dyslexic body,
 html.captains-open-dyslexic body * {
   font-family: "Captains OpenDyslexic", sans-serif !important;
 }
+
+.captains-readable-layout {
+  box-sizing: border-box !important;
+  clear: both !important;
+  float: none !important;
+  font-size: 18px !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1.65 !important;
+  margin-inline: auto !important;
+  max-width: 68ch !important;
+  padding: 24px !important;
+  width: calc(100% - 32px) !important;
+  word-spacing: 0.08em !important;
+}
+
+.captains-readable-layout *,
+.captains-readable-layout *::before,
+.captains-readable-layout *::after {
+  animation: none !important;
+  column-count: 1 !important;
+  column-width: auto !important;
+  scroll-behavior: auto !important;
+  text-align: left !important;
+  text-shadow: none !important;
+  transition: none !important;
+}
+
+.captains-readable-layout p,
+.captains-readable-layout li,
+.captains-readable-layout blockquote {
+  font-size: 18px !important;
+  line-height: 1.65 !important;
+  margin-block-end: 1.25em !important;
+}
+
+.captains-readable-layout img,
+.captains-readable-layout video,
+.captains-readable-layout table,
+.captains-readable-layout pre {
+  height: auto !important;
+  max-width: 100% !important;
+}

@@ -4,6 +4,7 @@ globalThis.Captains.features ??= {};
 let originalArticle;
 let originalHtml;
 let originalStyle;
+let originalHadReadableClass;
 
 function findMainArticle() {
   const candidates = [
@@ -20,24 +21,24 @@ function normalizeSingleColumn(root) {
     const style = getComputedStyle(element);
 
     if (style.columnCount !== 'auto' && style.columnCount !== '1') {
-      element.style.columnCount = '1';
-      element.style.columnWidth = 'auto';
+      element.style.setProperty('column-count', '1', 'important');
+      element.style.setProperty('column-width', 'auto', 'important');
     }
 
     if (style.display === 'grid' && style.gridTemplateColumns !== 'none') {
-      element.style.gridTemplateColumns = '1fr';
+      element.style.setProperty('grid-template-columns', '1fr', 'important');
     }
 
     if (style.display === 'flex' && style.flexDirection !== 'column') {
-      element.style.flexDirection = 'column';
+      element.style.setProperty('flex-direction', 'column', 'important');
     }
 
-    element.style.textAlign = 'left';
+    element.style.setProperty('text-align', 'left', 'important');
   });
 
-  root.style.columnCount = '1';
-  root.style.columnWidth = 'auto';
-  root.style.textAlign = 'left';
+  root.style.setProperty('column-count', '1', 'important');
+  root.style.setProperty('column-width', 'auto', 'important');
+  root.style.setProperty('text-align', 'left', 'important');
 }
 
 function splitLongParagraphs(root) {
@@ -108,6 +109,10 @@ globalThis.Captains.features.layout = {
       originalArticle = article;
       originalHtml = article.innerHTML;
       originalStyle = article.getAttribute('style');
+      originalHadReadableClass = article.classList.contains(
+        'captains-readable-layout',
+      );
+      article.classList.add('captains-readable-layout');
       this.apply(article);
       return;
     }
@@ -117,8 +122,12 @@ globalThis.Captains.features.layout = {
     originalArticle.innerHTML = originalHtml;
     if (originalStyle === null) originalArticle.removeAttribute('style');
     else originalArticle.setAttribute('style', originalStyle);
+    if (!originalHadReadableClass) {
+      originalArticle.classList.remove('captains-readable-layout');
+    }
     originalArticle = null;
     originalHtml = null;
     originalStyle = null;
+    originalHadReadableClass = null;
   },
 };
