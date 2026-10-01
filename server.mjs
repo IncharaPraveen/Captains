@@ -66,4 +66,4 @@ const server = http.createServer(async (request, response) => {
   }
 });
 
-server.listen(port, "127.0.0.1", () => console.log(`Captains summariser listening on http://localhost:${port}`));
+server.listen(port, "0.0.0.0", () => console.log(`Captains summariser listening on http://localhost:${port}`));
