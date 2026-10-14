@@ -4,7 +4,12 @@
 globalThis.Captains ??= {};
 globalThis.Captains.features ??= {};
 
-if (globalThis.Captains.features.textToSpeech?.version === "0.1.3") return;
+if (globalThis.Captains.features.textToSpeech?.version === "0.1.4") return;
+
+globalThis.Captains.features.textToSpeech?.stop?.();
+document.querySelectorAll?.("captains-read-aloud")?.forEach((element) => {
+  element.remove();
+});
 
 const CHUNK_LENGTH = 200;
 const CANCEL_SETTLE_TIME = 150;
@@ -26,6 +31,7 @@ let selectionOffset = 0;
 let restartTimer;
 let readyAt = 0;
 let selectionCaptureTimer;
+let summaryRequest = 0;
 
 function createControls() {
   host = document.createElement("captains-read-aloud");
@@ -338,11 +344,7 @@ function summarizeText(text) {
     .join(" ");
 }
 
-function summariseSelection() {
-  if (!selectedText) return;
-  controls.summaryText.textContent = summarizeText(selectedText);
-  controls.summary.hidden = false;
-  controls.status.textContent = "Summarised";
+function repositionExpandedPanel() {
   requestAnimationFrame(() => {
     const panelRect = host.getBoundingClientRect();
     const top = Number.parseFloat(
@@ -356,6 +358,39 @@ function summariseSelection() {
       );
     }
   });
+}
+
+async function summariseSelection() {
+  if (!selectedText) return;
+
+  const request = ++summaryRequest;
+  const text = selectedText;
+  controls.summary.hidden = false;
+  controls.summaryText.textContent = "Creating summary…";
+  controls.status.textContent = "Summarising…";
+  controls.summarise.disabled = true;
+  repositionExpandedPanel();
+
+  try {
+    const summariser = globalThis.Captains.features.summariser;
+    if (!summariser?.summarise) {
+      throw new Error("The online summariser is unavailable.");
+    }
+
+    const summary = await summariser.summarise(text);
+    if (request !== summaryRequest) return;
+    controls.summaryText.textContent = summary;
+    controls.status.textContent = "Summarised";
+  } catch {
+    if (request !== summaryRequest) return;
+    controls.summaryText.textContent = summarizeText(text);
+    controls.status.textContent = "Local summary";
+  } finally {
+    if (request === summaryRequest) {
+      controls.summarise.disabled = false;
+      repositionExpandedPanel();
+    }
+  }
 }
 
 function updateProgress() {
@@ -612,6 +647,7 @@ function captureSelection(pointerEvent) {
   }
 
   if (text !== selectedText) {
+    summaryRequest += 1;
     stop();
     selectedText = text;
     selectionOffset = 0;
@@ -655,7 +691,7 @@ function initialize() {
 }
 
 globalThis.Captains.features.textToSpeech = {
-  version: "0.1.3",
+  version: "0.1.4",
   initialize,
   stop() {
     if (initialized) stop();

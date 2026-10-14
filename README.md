@@ -14,9 +14,10 @@ OpenDyslexic switch that controls the same global preference as the extension
 popup.
 
 On a normal webpage, select any passage to open a compact read-aloud player.
-The player supports play, pause, stop, seeking, speed, and volume controls. It
-also creates a private, on-device extractive summary of the selection. The
-player is isolated from the webpage's own styles so it remains consistent
+The player supports play, pause, stop, seeking, speed, and volume controls. Its
+Summarise action uses the deployed Captains API for an AI-generated summary and
+falls back to a private, on-device extractive summary if the API is unavailable.
+The player is isolated from the webpage's own styles so it remains consistent
 across sites.
 
 ## Project structure
@@ -24,6 +25,8 @@ across sites.
 ```text
 .
 ├── manifest.json
+├── package.json
+├── server.mjs
 ├── src/
 │   ├── background.js
 │   ├── content.js
@@ -33,6 +36,7 @@ across sites.
 │   ├── features/
 │   │   ├── extract.js
 │   │   ├── open-dyslexic.js
+│   │   ├── summariser.js
 │   │   └── text-to-speech.js
 │   ├── reader/
 │   │   ├── reader.html
@@ -66,6 +70,13 @@ across sites.
 
 After changing a file, click the extension's reload button on the extensions
 page and refresh any page being tested.
+
+## Summariser service
+
+The Render web service runs `npm install` and `npm start` from the repository
+root. Set `GROQ_API_KEY` in the Render environment; `GROQ_MODEL` is optional.
+Use `GET /health` to check the service and `POST /api/summarise` with a JSON
+body containing `text` to create a summary.
 
 ## Next steps
 

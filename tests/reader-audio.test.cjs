@@ -3,7 +3,7 @@ const { readFileSync } = require("node:fs");
 const { test } = require("node:test");
 const vm = require("node:vm");
 
-function setup(text = "First word. Second word.") {
+function setup(text = "First word. Second word.", options = {}) {
   const elements = new Map();
   const documentListeners = new Map();
   const timers = [];
@@ -52,6 +52,9 @@ function setup(text = "First word. Second word.") {
     }),
   };
   const context = {
+    Captains: options.summarise ? {
+      features: { summariser: { summarise: options.summarise } },
+    } : undefined,
     document,
     window: { speechSynthesis: synthesis, getSelection: () => selection,
       innerWidth: 800, innerHeight: 600, addEventListener() {} },
@@ -69,7 +72,8 @@ function setup(text = "First word. Second word.") {
     context,
   );
   context.Captains.features.textToSpeech.initialize();
-  const fire = (id, type = "click") => elements.get(`#${id}`).listeners[type]();
+  const fire = (id, type = "click") =>
+    elements.get(`#${id}`).listeners[type]();
   const flush = () => {
     while (timers.length) {
       const timer = timers.shift();
@@ -212,12 +216,26 @@ test("Play, Pause, Play before timers run starts one utterance", () => {
   assert.equal(audio.spoken.length, 1);
 });
 
-test("Summarise shows a concise local summary of the selected text", () => {
+test("Summarise falls back to a concise local summary", async () => {
   const audio = setup(
     "Cancer screening can identify disease earlier. Earlier detection may improve treatment options. Screening also creates false positives and anxiety. Patients should discuss individual risks with a clinician.",
   );
-  audio.fire("summarise");
+  await audio.fire("summarise");
   assert.equal(audio.elements.get("#summary").hidden, false);
   assert.ok(audio.elements.get("#summary-text").textContent.length > 0);
   assert.ok(audio.elements.get("#summary-text").textContent.length < 183);
+  assert.equal(audio.elements.get("#status").textContent, "Local summary");
+});
+
+test("Summarise uses the configured online summariser", async () => {
+  const audio = setup("Text to send to the API.", {
+    summarise: async text => `AI summary of: ${text}`,
+  });
+  await audio.fire("summarise");
+  assert.equal(
+    audio.elements.get("#summary-text").textContent,
+    "AI summary of: Text to send to the API.",
+  );
+  assert.equal(audio.elements.get("#status").textContent, "Summarised");
+  assert.equal(audio.elements.get("#summarise").disabled, false);
 });

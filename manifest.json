@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Captains",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Accessible reading tools for the web.",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["<all_urls>"],
@@ -19,6 +19,7 @@
         "src/features/extract.js",
         "src/features/layout.js",
         "src/features/open-dyslexic.js",
+        "src/features/summariser.js",
         "src/features/text-to-speech.js",
         "src/content.js"
       ],

@@ -38,7 +38,10 @@ async function ensureSelectionTools() {
   try {
     await extensionApi.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ["src/features/text-to-speech.js"],
+      files: [
+        "src/features/summariser.js",
+        "src/features/text-to-speech.js",
+      ],
     });
     setStatus("Selection tools are ready on this page.");
   } catch {
