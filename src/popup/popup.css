@@ -39,12 +39,6 @@ button {
   width: 100%;
 }
 
-.button-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
 .setting {
   align-items: center;
   display: flex;

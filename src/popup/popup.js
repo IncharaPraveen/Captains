@@ -2,8 +2,6 @@ const extensionApi = globalThis.browser ?? globalThis.chrome;
 const openDyslexicInput = document.querySelector("#open-dyslexic");
 const layoutInput = document.querySelector("#layout");
 const openReaderButton = document.querySelector("#open-reader");
-const startReadingButton = document.querySelector("#start-reading");
-const stopReadingButton = document.querySelector("#stop-reading");
 const status = document.querySelector("#status");
 
 function setStatus(message) {
@@ -29,6 +27,25 @@ async function sendToActivePage(type) {
   return extensionApi.tabs.sendMessage(tab.id, { type });
 }
 
+async function ensureSelectionTools() {
+  const tab = await getActiveTab();
+
+  if (!tab?.id || !/^https?:/i.test(tab.url ?? "")) {
+    setStatus("Selection tools are unavailable on this browser page.");
+    return;
+  }
+
+  try {
+    await extensionApi.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ["src/features/text-to-speech.js"],
+    });
+    setStatus("Selection tools are ready on this page.");
+  } catch {
+    setStatus("Allow Captains site access, then refresh this page.");
+  }
+}
+
 extensionApi.storage.local.get(
   { openDyslexic: false, layout: false },
   ({ openDyslexic, layout }) => {
@@ -36,6 +53,10 @@ extensionApi.storage.local.get(
     layoutInput.checked = layout;
   },
 );
+
+ensureSelectionTools().catch(() => {
+  setStatus("Allow Captains site access, then refresh this page.");
+});
 
 openDyslexicInput.addEventListener("change", () => {
   extensionApi.storage.local.set(
@@ -64,24 +85,6 @@ openReaderButton.addEventListener("click", async () => {
         `src/reader/reader.html?id=${encodeURIComponent(documentId)}`,
       ),
     });
-  } catch (error) {
-    setStatus("Refresh a normal webpage and try again.");
-  }
-});
-
-startReadingButton.addEventListener("click", async () => {
-  try {
-    await sendToActivePage("CAPTAINS_START_READING");
-    setStatus("Reading the current page.");
-  } catch (error) {
-    setStatus("Refresh a normal webpage and try again.");
-  }
-});
-
-stopReadingButton.addEventListener("click", async () => {
-  try {
-    await sendToActivePage("CAPTAINS_STOP_READING");
-    setStatus("Reading stopped.");
   } catch (error) {
     setStatus("Refresh a normal webpage and try again.");
   }

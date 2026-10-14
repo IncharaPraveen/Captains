@@ -24,14 +24,6 @@ extensionApi.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     case "CAPTAINS_EXTRACT_READER":
       sendResponse(features.extract.forReader());
       break;
-    case "CAPTAINS_START_READING":
-      features.textToSpeech.start();
-      sendResponse({ ok: true });
-      break;
-    case "CAPTAINS_STOP_READING":
-      features.textToSpeech.stop();
-      sendResponse({ ok: true });
-      break;
     default:
       return false;
   }

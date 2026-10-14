@@ -1,7 +1,7 @@
 # Captains browser extension
 
 A no-build-step Chrome extension with an accessible reading view, a global
-OpenDyslexic font switch, and text-to-speech.
+OpenDyslexic font switch, and selection-based text-to-speech on normal webpages.
 
 The reading view uses a single 68-character column, 18px sans-serif body text,
 1.65 line spacing, left alignment, increased paragraph/character/word spacing,
@@ -12,6 +12,12 @@ sponsored or promoted material, paid or partner content, or recommendations are
 always removed, along with common tracking-pixel images. Its header includes an
 OpenDyslexic switch that controls the same global preference as the extension
 popup.
+
+On a normal webpage, select any passage to open a compact read-aloud player.
+The player supports play, pause, stop, seeking, speed, and volume controls. It
+also creates a private, on-device extractive summary of the selection. The
+player is isolated from the webpage's own styles so it remains consistent
+across sites.
 
 ## Project structure
 
@@ -55,8 +61,8 @@ popup.
 2. Turn on **Developer mode**.
 3. Choose **Load unpacked** and select this folder.
 4. Pin **Captains** and open its popup.
-5. Try opening the reading view, enabling OpenDyslexic, or reading a normal
-   webpage aloud.
+5. Try opening the reading view, enabling OpenDyslexic, or selecting text on a
+   normal webpage to read it aloud.
 
 After changing a file, click the extension's reload button on the extensions
 page and refresh any page being tested.
