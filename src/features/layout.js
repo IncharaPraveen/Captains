@@ -4,7 +4,6 @@ globalThis.Captains.features ??= {};
 let originalArticle;
 let originalHtml;
 let originalStyle;
-let originalHadReadableClass;
 
 function findMainArticle() {
   const candidates = [
@@ -21,24 +20,24 @@ function normalizeSingleColumn(root) {
     const style = getComputedStyle(element);
 
     if (style.columnCount !== 'auto' && style.columnCount !== '1') {
-      element.style.setProperty('column-count', '1', 'important');
-      element.style.setProperty('column-width', 'auto', 'important');
+      element.style.columnCount = '1';
+      element.style.columnWidth = 'auto';
     }
 
     if (style.display === 'grid' && style.gridTemplateColumns !== 'none') {
-      element.style.setProperty('grid-template-columns', '1fr', 'important');
+      element.style.gridTemplateColumns = '1fr';
     }
 
     if (style.display === 'flex' && style.flexDirection !== 'column') {
-      element.style.setProperty('flex-direction', 'column', 'important');
+      element.style.flexDirection = 'column';
     }
 
-    element.style.setProperty('text-align', 'left', 'important');
+    element.style.textAlign = 'left';
   });
 
-  root.style.setProperty('column-count', '1', 'important');
-  root.style.setProperty('column-width', 'auto', 'important');
-  root.style.setProperty('text-align', 'left', 'important');
+  root.style.columnCount = '1';
+  root.style.columnWidth = 'auto';
+  root.style.textAlign = 'left';
 }
 
 function splitLongParagraphs(root) {
@@ -46,37 +45,9 @@ function splitLongParagraphs(root) {
     const text = paragraph.textContent.trim();
     if (!text) return;
 
-    // Protect periods that are not sentence boundaries before splitting.
-    // The markers are restored below, so the paragraph text is unchanged.
-    const protectedPeriods = [];
-    const protectedText = text
-      .replace(
-        /\b(?:e\.g|i\.e|etc|vs|mr|mrs|ms|dr|prof|sr|jr|st)\./gi,
-        (abbreviation) => {
-          const marker = `\uE000${protectedPeriods.length}\uE001`;
-          protectedPeriods.push(abbreviation);
-          return abbreviation.slice(0, -1) + marker;
-        },
-      )
-      .replace(/(?<=\d)\.(?=\d)/g, () => {
-        const marker = `\uE000${protectedPeriods.length}\uE001`;
-        protectedPeriods.push('.');
-        return marker;
-      })
-      .replace(/\b([A-Z])\.(?=\s+[A-Z]\b)/g, (initial) => {
-        const marker = `\uE000${protectedPeriods.length}\uE001`;
-        protectedPeriods.push('.');
-        return initial.slice(0, -1) + marker;
-      });
-
-    const sentences = protectedText.match(/[^.!?]+(?:[.!?]+|$)/g)
+    const sentences = text.match(/[^.!?]+(?:[.!?]+|$)/g)
       ?.map((sentence) => sentence.trim())
-      .filter(Boolean)
-      .map((sentence) =>
-        sentence.replace(/\uE000(\d+)\uE001/g, (_marker, index) =>
-          protectedPeriods[Number(index)],
-        ),
-      );
+      .filter(Boolean);
 
     if (!sentences || sentences.length <= 2) return;
 
@@ -109,10 +80,6 @@ globalThis.Captains.features.layout = {
       originalArticle = article;
       originalHtml = article.innerHTML;
       originalStyle = article.getAttribute('style');
-      originalHadReadableClass = article.classList.contains(
-        'captains-readable-layout',
-      );
-      article.classList.add('captains-readable-layout');
       this.apply(article);
       return;
     }
@@ -122,12 +89,8 @@ globalThis.Captains.features.layout = {
     originalArticle.innerHTML = originalHtml;
     if (originalStyle === null) originalArticle.removeAttribute('style');
     else originalArticle.setAttribute('style', originalStyle);
-    if (!originalHadReadableClass) {
-      originalArticle.classList.remove('captains-readable-layout');
-    }
     originalArticle = null;
     originalHtml = null;
     originalStyle = null;
-    originalHadReadableClass = null;
   },
 };
